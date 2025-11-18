@@ -3,8 +3,7 @@ const mongoose = require("mongoose");
 const User = require("./models/User");
 const bcrypt = require("bcryptjs");
 
-const MONGO = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/smartLeaveDB";
-
+const MONGO = process.env.MONGO_URI || mongoose.connect(process.env.MONGO_URL)
 async function run() {
   await mongoose.connect(MONGO);
   const email = "admin@example.com";
