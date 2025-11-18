@@ -118,8 +118,8 @@ export default function StudentDashboard() {
         <section className="panel">
           <div className="panel-head">
             <div>
-              <h2>Subjects & Leave Balance</h2>
-              <p className="text-muted">Live overview per subject</p>
+            <h2>Subjects & Leave Balance</h2>
+            <p className="text-muted">Live overview per subject</p>
             </div>
             <span className="pill muted">{stats.length} subjects</span>
           </div>
@@ -128,12 +128,12 @@ export default function StudentDashboard() {
             <div className="empty-state">No subjects configured yet.</div>
           ) : (
             <div className="subject-grid">
-              {stats.map((s) => {
-                const usagePercent = Math.min(100, (s.leavesTaken / Math.max(1, s.maxLeaves)) * 100);
-                return (
+            {stats.map((s) => {
+              const usagePercent = Math.min(100, (s.leavesTaken / Math.max(1, s.maxLeaves)) * 100);
+              return (
                   <div className="subject-card" key={s.subjectId}>
                     <div className="subject-card-head">
-                      <div>
+                    <div>
                         <p className="subject-name">{s.name}</p>
                         <p className="text-muted">{s.code}</p>
                       </div>
@@ -145,28 +145,28 @@ export default function StudentDashboard() {
 
                     <div className="progress-bar">
                       <div className="progress-fill" style={{ width: `${usagePercent}%` }} />
-                    </div>
+                  </div>
 
                     <div className="progress-meta">
-                      <span>Taken: {s.leavesTaken}</span>
-                      <span>Max: {s.maxLeaves}</span>
-                      <span>Pending: {s.leavesPending}</span>
-                    </div>
+                    <span>Taken: {s.leavesTaken}</span>
+                    <span>Max: {s.maxLeaves}</span>
+                    <span>Pending: {s.leavesPending}</span>
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
+          </div>
           )}
         </section>
 
         <section className="panel">
           <div className="panel-head">
             <div>
-              <h2>Recent Leaves</h2>
-              <p className="text-muted">
-                {recent.length ? "Latest submissions and their statuses" : "No submissions yet"}
-              </p>
-            </div>
+            <h2>Recent Leaves</h2>
+            <p className="text-muted">
+              {recent.length ? "Latest submissions and their statuses" : "No submissions yet"}
+            </p>
+          </div>
           </div>
 
           {recent.length === 0 ? (
@@ -174,29 +174,29 @@ export default function StudentDashboard() {
           ) : (
             <div className="table-box">
               <table className="data-table">
-                <thead>
-                  <tr>
-                    <th>Subject</th>
-                    <th>Type</th>
-                    <th>From</th>
-                    <th>To</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {recent.map((r) => (
-                    <tr key={r._id}>
-                      <td>{r.subject?.name || "—"}</td>
+              <thead>
+                <tr>
+                  <th>Subject</th>
+                  <th>Type</th>
+                  <th>From</th>
+                  <th>To</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recent.map((r) => (
+                  <tr key={r._id}>
+                    <td>{r.subject?.name || "—"}</td>
                       <td className="text-capitalize">{r.type}</td>
                       <td>{formatDate(r.fromDate)}</td>
                       <td>{formatDate(r.toDate)}</td>
-                      <td>
+                    <td>
                         <span className={`status-pill ${r.status}`}>{r.status}</span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
             </div>
           )}
         </section>

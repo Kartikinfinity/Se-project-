@@ -34,9 +34,9 @@ export default function TeacherDashboard() {
         ? `http://localhost:5000/api/teacher/approve/${leaveId}`
         : `http://localhost:5000/api/teacher/reject/${leaveId}`;
     try {
-      const res = await fetch(url, { method: "POST" });
-      const data = await res.json();
-      setMessage(data.message);
+    const res = await fetch(url, { method: "POST" });
+    const data = await res.json();
+    setMessage(data.message);
       setPending((prev) => prev.filter((leave) => leave._id !== leaveId));
     } catch (err) {
       console.error(err);
@@ -122,15 +122,15 @@ export default function TeacherDashboard() {
                       <td>
                         <div className="table-actions">
                           <button className="main-btn" onClick={() => updateStatus(leave._id, "approve")}>
-                            Approve
-                          </button>
+                      Approve
+                    </button>
                           <button className="ghost-btn" onClick={() => updateStatus(leave._id, "reject")}>
-                            Reject
-                          </button>
-                        </div>
+                      Reject
+                    </button>
+                  </div>
                       </td>
                     </tr>
-                  ))}
+              ))}
                 </tbody>
               </table>
             </div>

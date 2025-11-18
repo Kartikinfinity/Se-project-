@@ -29,9 +29,9 @@ export default function AddTeacher() {
 
       setMessage(res.data.message || "Teacher created successfully");
       setStatus("success");
-      setName("");
-      setEmail("");
-      setPassword("");
+        setName("");
+        setEmail("");
+        setPassword("");
       setDepartment("");
     } catch (err) {
       console.error(err);
@@ -52,35 +52,35 @@ export default function AddTeacher() {
         <form className="form-grid" onSubmit={addTeacher}>
           <div className="form-field">
             <label className="section-title">Name</label>
-            <input
-              className="input-field"
-              type="text"
-              placeholder="Teacher Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+        <input
+          className="input-field"
+          type="text"
+          placeholder="Teacher Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
           </div>
 
           <div className="form-field">
             <label className="section-title">Email</label>
-            <input
-              className="input-field"
-              type="email"
+        <input
+          className="input-field"
+          type="email"
               placeholder="teacher@college.edu"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
           </div>
 
           <div className="form-field">
             <label className="section-title">Temporary Password</label>
-            <input
-              className="input-field"
-              type="password"
+        <input
+          className="input-field"
+          type="password"
               placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
           </div>
 
           <div className="form-field">
@@ -100,7 +100,7 @@ export default function AddTeacher() {
             </button>
             <button className="ghost-btn" type="button" onClick={() => (window.location.href = "/admin-dashboard")}>
               Cancel
-            </button>
+        </button>
           </div>
         </form>
 

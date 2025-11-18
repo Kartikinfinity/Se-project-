@@ -32,13 +32,13 @@ export default function AssignTeacher() {
       return;
     }
     try {
-      const res = await fetch("http://localhost:5000/api/admin/assign-teacher", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ teacherId, subjectId }),
-      });
-      const data = await res.json();
-      setMsg(data.message);
+    const res = await fetch("http://localhost:5000/api/admin/assign-teacher", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ teacherId, subjectId }),
+    });
+    const data = await res.json();
+    setMsg(data.message);
     } catch (err) {
       console.error(err);
       setMsg("Unable to assign teacher");
@@ -57,31 +57,31 @@ export default function AssignTeacher() {
           <div className="form-field">
             <label className="section-title">Subject</label>
             <select className="input-field" value={subjectId} onChange={(e) => setSubjectId(e.target.value)}>
-              <option value="">Select Subject</option>
-              {subjects.map((s) => (
-                <option value={s._id} key={s._id}>
+          <option value="">Select Subject</option>
+          {subjects.map((s) => (
+            <option value={s._id} key={s._id}>
                   {s.name} ({s.code})
-                </option>
-              ))}
-            </select>
+            </option>
+          ))}
+        </select>
           </div>
 
           <div className="form-field">
             <label className="section-title">Teacher</label>
             <select className="input-field" value={teacherId} onChange={(e) => setTeacherId(e.target.value)}>
-              <option value="">Select Teacher</option>
-              {teachers.map((t) => (
-                <option value={t._id} key={t._id}>
-                  {t.name}
-                </option>
-              ))}
-            </select>
+          <option value="">Select Teacher</option>
+          {teachers.map((t) => (
+            <option value={t._id} key={t._id}>
+              {t.name}
+            </option>
+          ))}
+        </select>
           </div>
 
           <div className="form-actions">
             <button className="main-btn" type="submit">
-              Assign Teacher
-            </button>
+          Assign Teacher
+        </button>
             <button className="ghost-btn" type="button" onClick={() => (window.location.href = "/admin-dashboard")}>
               Cancel
             </button>

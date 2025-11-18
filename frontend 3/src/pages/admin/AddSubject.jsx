@@ -15,13 +15,13 @@ export default function AddSubject() {
     }
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/admin/add-subject", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, code, maxLeaves }),
-      });
-      const data = await res.json();
-      setMessage(data.message);
+    const res = await fetch("http://localhost:5000/api/admin/add-subject", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, code, maxLeaves }),
+    });
+    const data = await res.json();
+    setMessage(data.message);
       if (res.ok) {
         setName("");
         setCode("");
@@ -46,27 +46,27 @@ export default function AddSubject() {
         <form className="form-grid" onSubmit={submit}>
           <div className="form-field">
             <label className="section-title">Subject Name</label>
-            <input
-              className="input-field"
-              placeholder="Subject Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+        <input
+          className="input-field"
+          placeholder="Subject Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
           </div>
 
           <div className="form-field">
             <label className="section-title">Subject Code</label>
-            <input className="input-field" placeholder="Code" value={code} onChange={(e) => setCode(e.target.value)} />
+        <input className="input-field" placeholder="Code" value={code} onChange={(e) => setCode(e.target.value)} />
           </div>
 
           <div className="form-field">
             <label className="section-title">Max Leaves</label>
-            <input
-              className="input-field"
+        <input
+          className="input-field"
               placeholder="Default 3"
-              value={maxLeaves}
-              onChange={(e) => setMaxLeaves(e.target.value)}
-            />
+          value={maxLeaves}
+          onChange={(e) => setMaxLeaves(e.target.value)}
+        />
           </div>
 
           <div className="form-actions">
@@ -75,7 +75,7 @@ export default function AddSubject() {
             </button>
             <button className="ghost-btn" type="button" onClick={() => (window.location.href = "/admin-dashboard")}>
               Cancel
-            </button>
+        </button>
           </div>
         </form>
 

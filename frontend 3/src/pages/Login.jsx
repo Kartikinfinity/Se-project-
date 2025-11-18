@@ -53,38 +53,38 @@ export default function Login() {
         <form className="grid" onSubmit={handleLogin}>
           <div>
             <label className="section-title">Email</label>
-            <input
+        <input
               className="input-field"
-              type="email"
+          type="email"
               placeholder="name@college.edu"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
           </div>
 
           <div>
             <label className="section-title">Password</label>
-            <input
+        <input
               className="input-field"
-              type="password"
+          type="password"
               placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
           </div>
 
           <div>
             <label className="section-title">Login as</label>
             <select className="input-field" value={role} onChange={(e) => setRole(e.target.value)}>
-              <option value="student">Student</option>
-              <option value="teacher">Teacher</option>
-              <option value="admin">Admin</option>
-            </select>
+          <option value="student">Student</option>
+          <option value="teacher">Teacher</option>
+          <option value="admin">Admin</option>
+        </select>
           </div>
 
           <button className="main-btn" type="submit" disabled={loading}>
             {loading ? "Signing In..." : "Sign In"}
-          </button>
+        </button>
         </form>
 
         {message && (

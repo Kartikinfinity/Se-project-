@@ -81,15 +81,15 @@ export default function ApplyLeave() {
 
         <form className="form-grid" onSubmit={handleSubmit}>
           <div className="form-field">
-            <label className="section-title">Subject</label>
-            <select className="input-field" value={subject} onChange={(e) => setSubject(e.target.value)}>
-              <option value="">Select subject</option>
-              {subjects.map((s) => (
-                <option value={s.subjectId} key={s.subjectId}>
-                  {s.name} ({s.code})
-                </option>
-              ))}
-            </select>
+        <label className="section-title">Subject</label>
+        <select className="input-field" value={subject} onChange={(e) => setSubject(e.target.value)}>
+          <option value="">Select subject</option>
+          {subjects.map((s) => (
+            <option value={s.subjectId} key={s.subjectId}>
+              {s.name} ({s.code})
+            </option>
+          ))}
+        </select>
             {selectedSubject && (
               <p className="form-note">
                 Leaves remaining: <strong>{selectedSubject.leavesRemaining}</strong> / {selectedSubject.maxLeaves}
@@ -99,41 +99,41 @@ export default function ApplyLeave() {
 
           <div className="form-grid two-col">
             <div className="form-field">
-              <label className="section-title">From Date</label>
-              <input className="input-field" type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
-            </div>
-            <div className="form-field">
-              <label className="section-title">To Date</label>
-              <input className="input-field" type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} />
-            </div>
+            <label className="section-title">From Date</label>
+            <input className="input-field" type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
           </div>
+            <div className="form-field">
+            <label className="section-title">To Date</label>
+            <input className="input-field" type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} />
+          </div>
+        </div>
 
           <div className="form-field">
-            <label className="section-title">Leave Type</label>
-            <select className="input-field" value={type} onChange={(e) => setType(e.target.value)}>
-              <option value="normal">Normal Leave</option>
-              <option value="medical">Medical Leave</option>
-              <option value="od">On Duty (Event)</option>
-            </select>
+        <label className="section-title">Leave Type</label>
+        <select className="input-field" value={type} onChange={(e) => setType(e.target.value)}>
+          <option value="normal">Normal Leave</option>
+          <option value="medical">Medical Leave</option>
+          <option value="od">On Duty (Event)</option>
+        </select>
           </div>
 
-          {type === "medical" && (
+        {type === "medical" && (
             <div className="form-field">
               <label className="section-title">Upload Medical Certificate</label>
               <input className="input-field" type="file" onChange={(e) => setFile(e.target.files?.[0] || null)} />
               <p className="form-note">PDF / JPG files under 2MB.</p>
             </div>
-          )}
+        )}
 
           <div className="form-field">
-            <label className="section-title">Reason</label>
-            <textarea
-              className="input-field"
-              rows="4"
-              placeholder="Explain your reason..."
-              value={reason}
-              onChange={(e) => setReason(e.target.value)}
-            ></textarea>
+        <label className="section-title">Reason</label>
+        <textarea
+          className="input-field"
+          rows="4"
+          placeholder="Explain your reason..."
+          value={reason}
+          onChange={(e) => setReason(e.target.value)}
+        ></textarea>
           </div>
 
           <div className="form-actions">
@@ -142,7 +142,7 @@ export default function ApplyLeave() {
             </button>
             <button type="button" className="ghost-btn" onClick={() => (window.location.href = "/student-dashboard")}>
               Cancel
-            </button>
+        </button>
           </div>
         </form>
 
