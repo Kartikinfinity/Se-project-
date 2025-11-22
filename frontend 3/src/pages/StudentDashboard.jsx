@@ -96,10 +96,10 @@ export default function StudentDashboard() {
             <button className="main-btn" onClick={() => (window.location.href = "/apply-leave")}>
               Apply Leave
             </button>
-            <button className="ghost-btn" onClick={() => (window.location.href = "/apply-od")}>
+            <button className="main-btn" onClick={() => (window.location.href = "/apply-od")}>
               Apply OD
             </button>
-            <button className="ghost-btn" onClick={() => (window.location.href = "/profile")}>
+            <button className="main-btn" onClick={() => (window.location.href = "/profile")}>
               View Profile
             </button>
           </div>

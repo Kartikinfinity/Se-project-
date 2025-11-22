@@ -36,13 +36,14 @@ exports.getDashboard = async (req, res) => {
     // recent leaves (last 10)
     const recentLeaves = await Leave.find({ student: studentId })
       .populate("subject", "name code")
+      .populate("teacher", "name email")
       .sort({ createdAt: -1 })
       .limit(10)
       .lean();
 
     return res.json({ subjectStats, recentLeaves });
   } catch (err) {
-    console.error(err);
+    console.error("getDashboard error:", err);
     return res.status(500).json({ message: "Server error" });
   }
 };
@@ -50,13 +51,17 @@ exports.getDashboard = async (req, res) => {
 exports.getLeaves = async (req, res) => {
   try {
     const { studentId } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(studentId)) return res.status(400).json({ message: "Invalid studentId" });
+
     const leaves = await Leave.find({ student: studentId })
       .populate("subject", "name code")
+      .populate("teacher", "name email")
       .sort({ createdAt: -1 })
       .lean();
+
     return res.json({ leaves });
   } catch (err) {
-    console.error(err);
+    console.error("getLeaves error:", err);
     return res.status(500).json({ message: "Server error" });
   }
 };

@@ -14,22 +14,28 @@ export default function AddSubject() {
       return;
     }
     setLoading(true);
+    setMessage("");
     try {
-    const res = await fetch("http://localhost:5000/api/admin/add-subject", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, code, maxLeaves }),
-    });
-    const data = await res.json();
-    setMessage(data.message);
+      const res = await fetch("http://localhost:5000/api/admin/add-subject", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, code, maxLeaves: maxLeaves || 3 }),
+      });
+      const data = await res.json();
       if (res.ok) {
+        setMessage(`✅ ${data.message}`);
         setName("");
         setCode("");
         setMaxLeaves("");
+        setTimeout(() => {
+          window.location.href = "/admin-dashboard";
+        }, 1500);
+      } else {
+        setMessage(`❌ ${data.message || "Unable to add subject"}`);
       }
     } catch (err) {
       console.error(err);
-      setMessage("Unable to add subject");
+      setMessage("❌ Network error - please try again");
     } finally {
       setLoading(false);
     }
@@ -38,10 +44,17 @@ export default function AddSubject() {
   return (
     <div className="page-center">
       <div className="main-card">
-        <div className="page-title">Add Subject</div>
-        <p className="text-muted" style={{ marginBottom: 24 }}>
-          Define new subjects and configure their leave policies.
-        </p>
+        <header className="dashboard-header">
+          <div>
+            <div className="page-title">Add Subject</div>
+            <p className="text-muted" style={{ marginTop: 8 }}>
+              Define new subjects and configure their leave policies.
+            </p>
+          </div>
+          <button className="ghost-btn" onClick={() => (window.location.href = "/admin-dashboard")}>
+            Back to Dashboard
+          </button>
+        </header>
 
         <form className="form-grid" onSubmit={submit}>
           <div className="form-field">
@@ -80,9 +93,9 @@ export default function AddSubject() {
         </form>
 
         {message && (
-          <p className="text-muted" style={{ marginTop: 16, fontWeight: 600 }}>
+          <div className={`alert ${message.startsWith("✅") ? "success" : "error"}`} style={{ marginTop: 20 }}>
             {message}
-          </p>
+          </div>
         )}
       </div>
     </div>

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 
 export default function AddTeacher() {
   const [name, setName] = useState("");
@@ -8,46 +7,64 @@ export default function AddTeacher() {
   const [department, setDepartment] = useState("");
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState("idle");
+  const [loading, setLoading] = useState(false);
 
   const addTeacher = async (event) => {
     event.preventDefault();
     if (!name || !email || !password) {
-      setMessage("Name, email, and password are required.");
+      setMessage("❌ Name, email, and password are required.");
       setStatus("error");
       return;
     }
 
+    setLoading(true);
     setStatus("loading");
     setMessage("Creating teacher...");
     try {
-      const res = await axios.post("http://localhost:5000/api/admin/add-teacher", {
-        name,
-        email,
-        password,
-        department,
+      const res = await fetch("http://localhost:5000/api/admin/add-teacher", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password, department }),
       });
 
-      setMessage(res.data.message || "Teacher created successfully");
-      setStatus("success");
+      const data = await res.json();
+      if (res.ok) {
+        setMessage(`✅ ${data.message || "Teacher created successfully"}`);
+        setStatus("success");
         setName("");
         setEmail("");
         setPassword("");
-      setDepartment("");
+        setDepartment("");
+        setTimeout(() => {
+          window.location.href = "/admin-dashboard";
+        }, 1500);
+      } else {
+        setMessage(`❌ ${data.message || "Unable to create teacher"}`);
+        setStatus("error");
+      }
     } catch (err) {
       console.error(err);
-      const errorMessage = err.response?.data?.message || "Network error";
-      setMessage(errorMessage);
+      setMessage("❌ Network error - please try again");
       setStatus("error");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="page-center">
       <div className="main-card">
-        <div className="page-title">Add Teacher</div>
-        <p className="text-muted" style={{ marginBottom: 24 }}>
-          Onboard faculty members with instant access credentials.
-        </p>
+        <header className="dashboard-header">
+          <div>
+            <div className="page-title">Add Teacher</div>
+            <p className="text-muted" style={{ marginTop: 8 }}>
+              Onboard faculty members with instant access credentials.
+            </p>
+          </div>
+          <button className="ghost-btn" onClick={() => (window.location.href = "/admin-dashboard")}>
+            Back to Dashboard
+          </button>
+        </header>
 
         <form className="form-grid" onSubmit={addTeacher}>
           <div className="form-field">
@@ -95,8 +112,8 @@ export default function AddTeacher() {
           </div>
 
           <div className="form-actions">
-            <button className="main-btn" type="submit" disabled={status === "loading"}>
-              {status === "loading" ? "Adding..." : "Add Teacher"}
+            <button className="main-btn" type="submit" disabled={loading}>
+              {loading ? "Adding..." : "Add Teacher"}
             </button>
             <button className="ghost-btn" type="button" onClick={() => (window.location.href = "/admin-dashboard")}>
               Cancel
@@ -105,9 +122,9 @@ export default function AddTeacher() {
         </form>
 
         {message && (
-          <p className="text-muted" style={{ marginTop: 16, fontWeight: 600, color: status === "error" ? "#b91c1c" : "#0f172a" }}>
+          <div className={`alert ${status === "success" || message.startsWith("✅") ? "success" : "error"}`} style={{ marginTop: 20 }}>
             {message}
-          </p>
+          </div>
         )}
       </div>
     </div>

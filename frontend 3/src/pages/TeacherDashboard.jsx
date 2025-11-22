@@ -22,10 +22,13 @@ export default function TeacherDashboard() {
         setPending(pendingData.leaves || []);
         setHistory(historyData.leaves || []);
       } catch (err) {
-        console.error(err);
+        console.error("Error fetching teacher data:", err);
       }
     };
     fetchData();
+    // Auto-refresh every 30 seconds to catch new leaves
+    const interval = setInterval(fetchData, 30000);
+    return () => clearInterval(interval);
   }, [user?.id]);
 
   const updateStatus = async (leaveId, action) => {
@@ -34,13 +37,30 @@ export default function TeacherDashboard() {
         ? `http://localhost:5000/api/teacher/approve/${leaveId}`
         : `http://localhost:5000/api/teacher/reject/${leaveId}`;
     try {
-    const res = await fetch(url, { method: "POST" });
-    const data = await res.json();
-    setMessage(data.message);
-      setPending((prev) => prev.filter((leave) => leave._id !== leaveId));
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ teacherId: user.id }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setMessage(data.message);
+        setPending((prev) => prev.filter((leave) => leave._id !== leaveId));
+        // Refresh data to update counts
+        const [pendingRes, historyRes] = await Promise.all([
+          fetch(`http://localhost:5000/api/teacher/pending/${user.id}`),
+          fetch(`http://localhost:5000/api/teacher/history/${user.id}`),
+        ]);
+        const pendingData = await pendingRes.json();
+        const historyData = await historyRes.json();
+        setPending(pendingData.leaves || []);
+        setHistory(historyData.leaves || []);
+      } else {
+        setMessage(data.message || "Unable to update status");
+      }
     } catch (err) {
       console.error(err);
-      setMessage("Unable to update status");
+      setMessage("Network error - please try again");
     }
   };
 

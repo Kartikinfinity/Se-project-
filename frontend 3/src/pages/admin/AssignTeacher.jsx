@@ -6,6 +6,8 @@ export default function AssignTeacher() {
   const [teacherId, setTeacherId] = useState("");
   const [subjectId, setSubjectId] = useState("");
   const [msg, setMsg] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,6 +22,9 @@ export default function AssignTeacher() {
         setSubjects(subjectsData.subjects || []);
       } catch (err) {
         console.error(err);
+        setMsg("❌ Error loading data");
+      } finally {
+        setFetching(false);
       }
     };
     fetchData();
@@ -28,30 +33,50 @@ export default function AssignTeacher() {
   const submit = async (event) => {
     event.preventDefault();
     if (!teacherId || !subjectId) {
-      setMsg("Please select both subject and teacher.");
+      setMsg("❌ Please select both subject and teacher.");
       return;
     }
+    setLoading(true);
+    setMsg("");
     try {
-    const res = await fetch("http://localhost:5000/api/admin/assign-teacher", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ teacherId, subjectId }),
-    });
-    const data = await res.json();
-    setMsg(data.message);
+      const res = await fetch("http://localhost:5000/api/admin/assign-teacher", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ teacherId, subjectId }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setMsg(`✅ ${data.message}`);
+        setTeacherId("");
+        setSubjectId("");
+        setTimeout(() => {
+          window.location.href = "/admin-dashboard";
+        }, 1500);
+      } else {
+        setMsg(`❌ ${data.message || "Unable to assign teacher"}`);
+      }
     } catch (err) {
       console.error(err);
-      setMsg("Unable to assign teacher");
+      setMsg("❌ Network error - please try again");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="page-center">
       <div className="main-card">
-        <div className="page-title">Assign Teacher</div>
-        <p className="text-muted" style={{ marginBottom: 24 }}>
-          Link subjects with available teachers for streamlined workflows.
-        </p>
+        <header className="dashboard-header">
+          <div>
+            <div className="page-title">Assign Teacher</div>
+            <p className="text-muted" style={{ marginTop: 8 }}>
+              Link subjects with available teachers for streamlined workflows.
+            </p>
+          </div>
+          <button className="ghost-btn" onClick={() => (window.location.href = "/admin-dashboard")}>
+            Back to Dashboard
+          </button>
+        </header>
 
         <form className="form-grid" onSubmit={submit}>
           <div className="form-field">
@@ -79,9 +104,9 @@ export default function AssignTeacher() {
           </div>
 
           <div className="form-actions">
-            <button className="main-btn" type="submit">
-          Assign Teacher
-        </button>
+            <button className="main-btn" type="submit" disabled={loading || fetching}>
+              {loading ? "Assigning..." : "Assign Teacher"}
+            </button>
             <button className="ghost-btn" type="button" onClick={() => (window.location.href = "/admin-dashboard")}>
               Cancel
             </button>
@@ -89,9 +114,9 @@ export default function AssignTeacher() {
         </form>
 
         {msg && (
-          <p className="text-muted" style={{ marginTop: 16, fontWeight: 600 }}>
+          <div className={`alert ${msg.startsWith("✅") ? "success" : "error"}`} style={{ marginTop: 20 }}>
             {msg}
-          </p>
+          </div>
         )}
       </div>
     </div>

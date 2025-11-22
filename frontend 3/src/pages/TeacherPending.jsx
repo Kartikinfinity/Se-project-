@@ -31,12 +31,21 @@ export default function TeacherPending() {
         ? `http://localhost:5000/api/teacher/approve/${leaveId}`
         : `http://localhost:5000/api/teacher/reject/${leaveId}`;
     try {
-      const res = await fetch(url, { method: "POST" });
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ teacherId: user.id }),
+      });
       const data = await res.json();
-      setMessage(data.message);
-      setLeaves((prev) => prev.filter((leave) => leave._id !== leaveId));
+      if (res.ok) {
+        setMessage(data.message);
+        setLeaves((prev) => prev.filter((leave) => leave._id !== leaveId));
+      } else {
+        setMessage(data.message || "Unable to update status");
+      }
     } catch (err) {
       console.error(err);
+      setMessage("Network error - please try again");
     }
   };
 
@@ -101,6 +110,7 @@ export default function TeacherPending() {
     </div>
   );
 }
+
 
 
 
